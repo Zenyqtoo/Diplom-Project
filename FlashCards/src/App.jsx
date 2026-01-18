@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./pages/Home.jsx";
+import FlashcardViewer from "./components/FlashcardViewer.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="app">
+      <header className="header" style={{ maxWidth: 920 }}>
+        <div className="brand">
+          <div className="logo">KF</div>
+          <div>
+            <div className="title">Kids Flashcards</div>
+            <div style={{ fontSize: 13, color: "var(--muted)" }}>Learn with bright, fun cards</div>
+          </div>
+        </div>
+      </header>
 
-export default App
+      <main style={{ width: "100%", flex: 1 }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/category/:id/:index?" element={<FlashcardViewer />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+
+      <footer style={{ marginTop: 6, color: "var(--muted)", fontSize: 13 }}>
+        Tip: swipe left/right on the card, or use the big buttons.
+      </footer>
+    </div>
+  );
+}
