@@ -2,6 +2,8 @@ const makeLetterImage = (text, bg = "#ffd166") =>
   `-/${bg.slice(1)}/ffffff?text=${encodeURIComponent(text)}`;
 
 export const CATEGORIES = {
+  
+  // Категория: Алфавит
   alphabet: {
     id: "alphabet",
     title: "Alphabet",
@@ -13,6 +15,7 @@ export const CATEGORIES = {
       speak: ch
     }))
   },
+    // Категория: Цифры
   numbers: {
     id: "numbers",
     title: "Numbers",
@@ -27,6 +30,8 @@ export const CATEGORIES = {
       };
     })
   },
+
+  // Категория: Животные
   animals: {
     id: "animals",
     title: "Animals",
@@ -37,6 +42,7 @@ export const CATEGORIES = {
       { id: "a-bird", label: "Bird", imageUrl: "https://plus.unsplash.com/premium_photo-1674487959493-8894cc9473ea?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YmlyZHxlbnwwfHwwfHx8MA%3D%3D", speak: "Bird" }
     ]
   },
+  // Категория: Цвета
   colors: {
     id: "colors",
     title: "Colors",

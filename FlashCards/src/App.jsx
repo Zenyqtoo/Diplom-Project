@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import FlashcardViewer from "./components/FlashcardViewer.jsx";
+import Register from "./components/Register.jsx";
+import Login from "./components/Login.jsx";
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/category/:id/:index?" element={<FlashcardViewer />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

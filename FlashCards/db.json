@@ -1,0 +1,27 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "users": [
+    {
+      "email": "zere.iliyas.kz@gmail.com",
+      "password": "$2a$10$bpIucvZ7Z2fLUargW5ZhpeOTpym0muQeb8AXfKoKzOhbHW/QoGfMW",
+      "name": "Zere",
+      "id": 1
+    }
+  ]
+}

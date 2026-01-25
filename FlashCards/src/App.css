@@ -1,19 +1,28 @@
 :root{
-  --bg: #fff7f0;
-  --panel: #ffffff;
-  --accent: #ff7aa2;
-  --accent-2: #ffd166;
-  --primary: #4cc9f0;
-  --text: #023047;
-  --muted: #6b6b6b;
-  --radius: 16px;
-  --card-radius: 18px;
-  --container-width: 920px;
+  --bg: #fff7f0;               /* фон страницы */
+  --panel: #ffffff;           /* фон карточек */
+  --accent: #ff7aa2;          /* основной акцент */
+  --accent-2: #ffd166;        /* дополнительный акцент */
+  --primary: #4cc9f0;         /* синий акцент */
+  --text: #023047;            /* основной текст */
+  --muted: #6b6b6b;           /* вторичный текст */
+  --radius: 16px;             /* скругление блоков */
+  --card-radius: 18px;        /* скругление карточек */
+  --container-width: 920px;   /* ширина контента */
 }
 
 *{box-sizing:border-box}
-html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#fff);font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:var(--text);}
 
+/* базовые стили страницы */
+html,body,#root{
+  height:100%;
+  margin:0;
+  background:linear-gradient(180deg,var(--bg),#fff);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:var(--text);
+}
+
+/* основной контейнер */
 .app {
   min-height:100vh;
   display:flex;
@@ -23,7 +32,7 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   gap:20px;
 }
 
-/* Header */
+/* шапка */
 .header {
   width:100%;
   max-width:var(--container-width);
@@ -38,6 +47,8 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   align-items:center;
   gap:12px;
 }
+
+/* логотип */
 .logo {
   width:56px;
   height:56px;
@@ -51,13 +62,14 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   font-size:26px;
   box-shadow: 0 6px 18px rgba(255,122,162,0.18);
 }
+
 .title {
   font-family: "Fredoka One", cursive;
   font-size:20px;
   color:var(--text);
 }
 
-/* Home categories */
+/* главная страница */
 .home {
   width:100%;
   max-width:var(--container-width);
@@ -67,6 +79,7 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   align-items:center;
 }
 
+/* сетка категорий */
 .categories {
   width:100%;
   display:grid;
@@ -74,6 +87,7 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   gap:16px;
 }
 
+/* карточка категории */
 .cat-btn {
   background: linear-gradient(180deg,var(--panel),#fff);
   border-radius:var(--radius);
@@ -90,7 +104,13 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   font-weight:700;
   font-size:18px;
 }
-.cat-btn:hover { transform: translateY(-6px); box-shadow: 0 10px 26px rgba(0,0,0,0.08); }
+
+.cat-btn:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+}
+
+/* иконка категории */
 .cat-icon {
   width:64px;
   height:64px;
@@ -102,7 +122,7 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   color:white;
 }
 
-/* Viewer */
+/* экран просмотра */
 .viewer {
   width:100%;
   max-width:var(--container-width);
@@ -112,6 +132,7 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   align-items:center;
 }
 
+/* карточка */
 .card-frame {
   width:100%;
   background:linear-gradient(180deg,#fff,#fffaf2);
@@ -124,7 +145,7 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   box-shadow:0 10px 30px rgba(4, 51, 64, 0.06);
 }
 
-/* large image */
+/* изображение */
 .card-visual {
   width:100%;
   max-width:820px;
@@ -136,13 +157,14 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   justify-content:center;
   overflow:hidden;
 }
+
 .card-visual img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
 
-/* label and controls */
+/* название карточки */
 .card-label {
   font-family: "Fredoka One", cursive;
   font-size:34px;
@@ -152,6 +174,7 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   gap:14px;
 }
 
+/* панель кнопок */
 .controls {
   width:100%;
   display:flex;
@@ -160,7 +183,7 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   align-items:center;
 }
 
-/* big buttons */
+/* кнопки */
 .btn {
   background:var(--accent);
   color:white;
@@ -171,17 +194,19 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   cursor:pointer;
   box-shadow: 0 6px 18px rgba(255,122,162,0.18);
 }
+
 .btn.secondary {
   background:var(--primary);
   box-shadow: 0 6px 18px rgba(76,201,240,0.14);
 }
+
 .btn.ghost {
   background:transparent;
   color:var(--text);
   border:3px solid rgba(2,48,71,0.06);
 }
 
-/* small adjustments */
+/* мелкие элементы */
 .kf-category-title {
   display:flex;
   align-items:center;
@@ -190,11 +215,181 @@ html,body,#root{height:100%;margin:0;background:linear-gradient(180deg,var(--bg)
   font-size:18px;
 }
 
-/* responsive */
+/* адаптив */
 @media (max-width:720px){
   .card-visual{height:260px}
   .card-label { font-size:26px}
   .logo{width:48px;height:48px;font-size:22px}
   .title{font-size:18px}
   .cat-icon { width:56px; height:56px; font-size:24px; border-radius:12px; }
+}
+
+/* заголовок на главной */
+.home-header {
+  width: 100%;
+  max-width: var(--container-width);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-title {
+  margin: 0;
+  font-family: "Fredoka One", cursive;
+  font-size: 22px;
+}
+
+.home-subtitle {
+  color: var(--muted);
+}
+
+/* текст в карточке категории */
+.cat-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cat-count {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* viewer выравнивание по центру */
+.viewer-center {
+  align-items: center;
+}
+
+/* верхняя панель во viewer */
+.viewer-header {
+  width: 100%;
+  max-width: var(--container-width);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* блок названия категории */
+.viewer-category {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* цветной индикатор категории */
+.category-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+/* название категории */
+.category-name {
+  font-weight: 700;
+}
+
+/* карточка ошибки */
+.error-card {
+  text-align: center;
+  padding: 36px;
+}
+
+/* текст ошибки */
+.error-muted {
+  color: var(--muted);
+}
+
+/* отступ сверху */
+.mt-12 {
+  margin-top: 12px;
+}
+
+/* контент под карточкой */
+.card-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* контейнер заголовка карточки */
+.card-label-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* пустой spacer для выравнивания */
+.flex-spacer {
+  flex: 1;
+}
+
+/* текст по центру */
+.text-center {
+  text-align: center;
+  width: 100%;
+}
+
+/* блок кнопки воспроизведения */
+.play-wrapper {
+  flex: 1;
+  text-align: right;
+}
+
+/* панель кнопок навигации */
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* группа кнопок */
+.controls-group {
+  display: flex;
+  gap: 8px;
+}
+
+/* счетчик карточек */
+.counter {
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 80px;
+  text-align: right;
+}
+
+/* Основной контейнер карточки */
+.flashcard {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Верхняя часть с картинкой */
+.flashcard-image {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Изображение */
+.flashcard-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* сохраняет пропорции */
+}
+
+/* Нижняя часть с подписью */
+.flashcard-label {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Текст подписи */
+.flashcard-text {
+  font-size: 28px;
+  font-family: "Fredoka One", cursive;
 }

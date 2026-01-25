@@ -1,14 +1,17 @@
 import React from "react";
 
+// Компонент карточки
 export default function Flashcard({ card }) {
   return (
-    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
-      <div style={{ flex: 1, width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div className="flashcard">
+      {/* Верхняя часть */}
+      <div className="flashcard-image">
         <img src={card.imageUrl} alt={card.label || "card"} />
       </div>
 
-      <div style={{ padding: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontSize: 28, fontFamily: "Fredoka One, cursive" }}>{card.label}</div>
+      {/* Нижняя часть*/}
+      <div className="flashcard-label">
+        <div className="flashcard-text">{card.label}</div>
       </div>
     </div>
   );
