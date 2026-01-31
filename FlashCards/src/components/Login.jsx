@@ -18,9 +18,17 @@ const Login = () => {
     try {
       const data = await loginUser(email, password); 
       if (data?.accessToken) {
-        localStorage.setItem("accessToken", data.accessToken);
-        navigate("/Home"); 
-      } else {
+
+  localStorage.setItem("accessToken", data.accessToken);
+  localStorage.setItem(
+    "user",
+    JSON.stringify({
+      email: email,
+      name: data.user?.name || email.split("@")[0],
+    })
+  );
+  navigate("/");
+} else {
         setError("Login did not return an access token.");
       }
     } catch (err) {

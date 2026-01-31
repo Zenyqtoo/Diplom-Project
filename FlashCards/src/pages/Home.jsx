@@ -17,7 +17,7 @@ export default function Home() {
 
   function handleLogout() {
     localStorage.removeItem("user"); // remove user info
-    localStorage.removeItem("accessToken"); // optional
+    localStorage.removeItem("accessToken"); 
     setUser(null)
   }
 

@@ -4,19 +4,13 @@ import Home from "./pages/Home.jsx";
 import FlashcardViewer from "./components/FlashcardViewer.jsx";
 import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
+import NavBar from "./components/NavBar.jsx";
 
 export default function App() {
   return (
     <div className="app">
-      <header className="header" style={{ maxWidth: 920 }}>
-        <div className="brand">
-          <div className="logo">KF</div>
-          <div>
-            <div className="title">Kids Flashcards</div>
-            <div style={{ fontSize: 13, color: "var(--muted)" }}>Learn with bright, fun cards</div>
-          </div>
-        </div>
-      </header>
+      {/* 🔹 NavBar handles user info, search, and create buttons */}
+      <NavBar />
 
       <main style={{ width: "100%", flex: 1 }}>
         <Routes>
@@ -34,3 +28,5 @@ export default function App() {
     </div>
   );
 }
+
+

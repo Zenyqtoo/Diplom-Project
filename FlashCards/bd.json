@@ -1,4 +1,10 @@
 {
   "users": [],
-  "flashcards": []
+  "categories": [
+    { "id": "alphabet", "title": "Alphabet", "color":"#ff7aa2", "cards": [] },
+    { "id": "animals", "title": "Animals", "color":"#ffd166", "cards": [] },
+    { "id": "numbers", "title": "Numbers", "color":"#4cc9f0", "cards": [] },
+    { "id": "colors", "title": "Colors", "color":"#ffd6a5", "cards": [] }
+  ],
+  "progress": []
 }

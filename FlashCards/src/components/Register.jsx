@@ -47,18 +47,18 @@ export default function Register() {
     try {
       const result = await registerUser(trimmedName, trimmedEmail, password);
       console.log("Registration successful:", result);
-      // store user info in localStorage
+
       localStorage.setItem(
       "user",
       JSON.stringify({ name: trimmedName, email: trimmedEmail })
     );
       alert("Registration successful! You can now log in.");
-      // reset form
+
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      // go to login page
+
       navigate("/login");
     } catch (err) {
       console.error("Registration failed:", err);

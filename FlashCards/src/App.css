@@ -393,3 +393,40 @@ html,body,#root{
   font-size: 28px;
   font-family: "Fredoka One", cursive;
 }
+
+.register-page, .login-page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 16px;
+  background: linear-gradient(180deg,#fff,#fffaf2);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+}
+
+.register-form input,
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.register-button, .login-button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+}
+
+.search-results .result {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #f0f0f0;
+  background:white;
+}
