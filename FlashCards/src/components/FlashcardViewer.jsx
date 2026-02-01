@@ -1,18 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { CATEGORIES } from "../data/cards.jsx";
 import Flashcard from "./Flashcard.jsx";
 import { ArrowLeft, ArrowRight, Dices, Play } from "lucide-react";
 
 export default function FlashcardViewer() {
-  // получаем параметры из URL
   const { id, index: indexParam } = useParams();
   const navigate = useNavigate();
 
-  // выбранная категория
-  const cat = CATEGORIES[id];
+  // Get categories from localStorage
+  const [categories, setCategories] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("localCategories") || "null");
+      return Array.isArray(saved) && saved.length ? saved : [];
+    } catch {
+      return [];
+    }
+  });
 
-  // если категория не найдена
+  // Listen for localStorage changes (so newly added cards appear)
+  useEffect(() => {
+    function onStorage() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("localCategories") || "null");
+        if (Array.isArray(saved)) setCategories(saved);
+      } catch {}
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  // Find the selected category
+  const cat = categories.find((c) => c.id === id);
+
   if (!cat) {
     return (
       <section className="viewer viewer-center">
@@ -35,10 +54,8 @@ export default function FlashcardViewer() {
     );
   }
 
-  // общее количество карточек
   const total = cat.cards.length;
 
-  // безопасно парсим индекс из URL
   const parsedIndex = (() => {
     if (typeof indexParam === "undefined") return 0;
     const p = Number(indexParam);
@@ -46,10 +63,8 @@ export default function FlashcardViewer() {
     return Math.min(Math.max(0, p), total - 1);
   })();
 
-  // текущий индекс карточки
   const [index, setIndex] = useState(parsedIndex);
 
-  // синхронизация URL с текущим индексом
   useEffect(() => {
     navigate(`/category/${encodeURIComponent(cat.id)}/${index}`, {
       replace: true,
@@ -57,12 +72,10 @@ export default function FlashcardViewer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
-  // координаты начала касания / клика
   const touchStartX = useRef(null);
   const touchStartY = useRef(null);
   const pointerDown = useRef(false);
 
-  // обработка стрелок на клавиатуре
   useEffect(() => {
     function onKey(e) {
       if (e.key === "ArrowRight") next();
@@ -70,27 +83,22 @@ export default function FlashcardViewer() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line
   }, [index]);
 
-  // переход к следующей карточке
   function next() {
     setIndex((i) => Math.min(total - 1, i + 1));
   }
 
-  // переход к предыдущей карточке
   function prev() {
     setIndex((i) => Math.max(0, i - 1));
   }
 
-  // начало свайпа
   function onPointerDown(e) {
     pointerDown.current = true;
     touchStartX.current = e.clientX ?? e.touches?.[0]?.clientX;
     touchStartY.current = e.clientY ?? e.touches?.[0]?.clientY;
   }
 
-  // окончание свайпа
   function onPointerUp(e) {
     if (!pointerDown.current) return;
     pointerDown.current = false;
@@ -105,7 +113,6 @@ export default function FlashcardViewer() {
     const dx = endX - touchStartX.current;
     const dy = endY - touchStartY.current;
 
-    // определяем направление свайпа
     if (Math.abs(dx) > 50 && Math.abs(dy) < 80) {
       if (dx < 0) next();
       else prev();
@@ -115,7 +122,6 @@ export default function FlashcardViewer() {
     touchStartY.current = null;
   }
 
-  // озвучивание слова через Speech API
   function speak(text) {
     try {
       if (!("speechSynthesis" in window)) {
@@ -134,15 +140,12 @@ export default function FlashcardViewer() {
 
   return (
     <section className="viewer viewer-center">
-      {/* верхняя панель */}
       <div className="viewer-header">
         <div className="kf-category-title">
-          {/* кнопка возврата */}
           <button className="btn ghost" onClick={() => navigate("/")}>
             ←
           </button>
 
-          {/* название категории */}
           <div className="viewer-category">
             <div
               className="category-dot"
@@ -154,80 +157,47 @@ export default function FlashcardViewer() {
         </div>
       </div>
 
-      {/* основная карточка */}
       <div
         className="card-frame"
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
-        onTouchStart={(e) =>
-          onPointerDown(e.touches ? e.touches[0] : e)
-        }
-        onTouchEnd={(e) =>
-          onPointerUp(e.changedTouches ? e.changedTouches[0] : e)
-        }
+        onTouchStart={(e) => onPointerDown(e.touches ? e.touches[0] : e)}
+        onTouchEnd={(e) => onPointerUp(e.changedTouches ? e.changedTouches[0] : e)}
       >
-        {/* визуальная часть карточки */}
         <div className="card-visual" aria-live="polite">
           <Flashcard card={cat.cards[index]} />
         </div>
 
-        {/* текст и управление */}
         <div className="card-content">
-          {/* заголовок карточки */}
           <div className="card-label card-label-row">
             <div className="flex-spacer" />
-
-            {/* название карточки */}
-            <div className="text-center">
-              {cat.cards[index].label}
-            </div>
-
-            {/* кнопка озвучивания */}
+            <div className="text-center">{cat.cards[index].label}</div>
             <div className="play-wrapper">
               <button
                 className="btn secondary"
-                onClick={() =>
-                  speak(
-                    cat.cards[index].speak ||
-                      cat.cards[index].label
-                  )
-                }
+                onClick={() => speak(cat.cards[index].label)}
               >
                 <Play /> Play
               </button>
             </div>
           </div>
 
-          {/* кнопки навигации */}
           <div className="controls controls-row">
             <div className="controls-group">
-              <button
-                className="btn ghost"
-                onClick={prev}
-                aria-label="Previous"
-              >
+              <button className="btn ghost" onClick={prev} aria-label="Previous">
                 <ArrowLeft /> Prev
               </button>
-
               <button
                 className="btn"
-                onClick={() =>
-                  setIndex(Math.floor(Math.random() * total))
-                }
+                onClick={() => setIndex(Math.floor(Math.random() * total))}
               >
                 <Dices /> Random
               </button>
-
-              <button
-                className="btn ghost"
-                onClick={next}
-                aria-label="Next"
-              >
+              <button className="btn ghost" onClick={next} aria-label="Next">
                 Next <ArrowRight />
               </button>
             </div>
 
-            {/* счетчик карточек */}
             <div className="counter">
               {index + 1} / {total}
             </div>
@@ -237,3 +207,8 @@ export default function FlashcardViewer() {
     </section>
   );
 }
+
+
+
+
+

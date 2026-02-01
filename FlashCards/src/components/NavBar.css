@@ -1,0 +1,106 @@
+nav.navbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.hamburger-button {
+  background: transparent;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.navbar-spacer {
+  flex: 1;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-links.hidden {
+  display: none;
+}
+
+.nav-link {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+}
+
+.btn.ghost {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.nav-login {
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 64px;
+  background: #fff;
+  z-index: 2000;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.mobile-menu div {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.mobile-link {
+  padding: 8px 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Стили для кнопок авторизации / выхода */
+.nav-login {
+  padding: 8px 16px;           
+  margin-left: 8px;            
+  background-color: #d8a76b;   
+  color: white;                
+  border: none;               
+  border-radius: 8px;          
+  cursor: pointer;            
+  font-weight: 500;         
+  transition: background 0.3s;
+}
+
+.nav-login:hover {
+  background-color: #5b3501; 
+}
+
+.nav-login:disabled {
+  opacity: 0.6;     
+  cursor: not-allowed; 
+}
+

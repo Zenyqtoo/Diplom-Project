@@ -1,37 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { addCategory } from "../services/categoriesService.jsx";
+import { addCardToCategory } from "../services/categoriesService.jsx";
 
-export default function CreateCategoryModal({ open, onClose, onCreated }) {
-  const [title, setTitle] = useState("");
-  const [color, setColor] = useState("#ffd166");
+export default function CreateCardModal({ open, onClose, categories, onCreated }) {
+  const [categoryId, setCategoryId] = useState(categories?.[0]?.id || "");
+  const [label, setLabel] = useState("");
+  const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (open) {
-      setTitle("");
-      setColor("#ffd166");
+      setLabel("");
+      setImage("");
+      setCategoryId(categories?.[0]?.id || "");
       setError("");
     }
-  }, [open]);
+  }, [open, categories]);
 
   if (!open) return null;
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
-    if (!title.trim()) {
-      setError("Please enter a category title");
+
+    if (!label.trim()) {
+      setError("Please enter a label");
       return;
     }
+
+    if (!image.trim()) {
+      setError("Please enter an image URL");
+      return;
+    }
+
     setLoading(true);
     try {
-      const created = await addCategory({ title: title.trim(), color, cards: [] });
-      if (onCreated) onCreated(created);
+      const updatedCategory = await addCardToCategory(categoryId, {
+        label: label.trim(),
+        image: image.trim(),
+      });
+
+      if (onCreated) onCreated(updatedCategory);
       onClose();
     } catch (err) {
       console.error(err);
-      setError(err?.body?.message || err?.message || "Failed to create category");
+      setError(err?.message || "Failed to create card");
     } finally {
       setLoading(false);
     }
@@ -44,24 +57,28 @@ export default function CreateCategoryModal({ open, onClose, onCreated }) {
     }}>
       <div style={{ width: 560, maxWidth: "95%", background: "white", borderRadius: 12, padding: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <h3 style={{ margin: 0 }}>Create category</h3>
+          <h3>Create Card</h3>
           <button onClick={onClose} className="btn ghost">Close</button>
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <select value={categoryId} onChange={e => setCategoryId(e.target.value)}>
+            {categories.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
+          </select>
+
           <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Category title (e.g. Animals)"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            placeholder="Label (e.g. Cat)"
             style={{ padding: 10 }}
           />
 
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <label style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              Color:
-              <input type="color" value={color} onChange={(e) => setColor(e.target.value)} style={{ width: 44, height: 34, border: "none", background: "transparent" }} />
-            </label>
-          </div>
+          <input
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            placeholder="Image URL"
+            style={{ padding: 10 }}
+          />
 
           {error && <div style={{ color: "crimson" }}>{error}</div>}
 

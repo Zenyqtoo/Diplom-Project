@@ -1,0 +1,29 @@
+/* Контейнер формы поиска */
+.search-form {
+  display: flex;
+  gap: 8px; /* Расстояние между полем ввода и кнопкой */
+}
+
+/* Поле ввода поиска */
+.search-input {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+  width: 280px;
+}
+
+/* Кнопка поиска */
+.button-search {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #d8a76b;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.button-search:hover {
+  background-color: #5b3501;
+}
+

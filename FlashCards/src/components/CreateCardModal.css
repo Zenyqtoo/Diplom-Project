@@ -1,0 +1,51 @@
+/* Фон модального окна */
+.create-card-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 2000;
+}
+
+/* Основной контейнер модального окна */
+.create-card-modal-container {
+  width: 560px;
+  max-width: 95%;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Верхняя панель с заголовком и кнопкой закрытия */
+.create-card-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Форма модального окна */
+.create-card-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Поля ввода */
+.create-card-modal-input {
+  padding: 10px;
+}
+
+/* Контейнер кнопок внизу */
+.create-card-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Сообщение об ошибке */
+.create-card-modal-error {
+  color: crimson;
+}

@@ -9,7 +9,7 @@ import NavBar from "./components/NavBar.jsx";
 export default function App() {
   return (
     <div className="app">
-      {/* 🔹 NavBar handles user info, search, and create buttons */}
+      {}
       <NavBar />
 
       <main style={{ width: "100%", flex: 1 }}>

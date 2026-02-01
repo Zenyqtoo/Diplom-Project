@@ -1,53 +1,152 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CATEGORIES } from "../data/cards.jsx";
-
+import SearchForm from "../components/SearchForm.jsx";
+import { CATEGORIES as DEFAULT_CATEGORIES } from "../data/categories.jsx";
+import "./Home.css"; // стили страницы Home
 
 export default function Home() {
   const navigate = useNavigate();
-   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    // Get info from localStorage
-     const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      setUser(storedUser);
+  // состояние категорий (берем из localStorage или дефолт)
+  const [categories, setCategories] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("localCategories") || "null");
+      return Array.isArray(saved) && saved.length ? saved : DEFAULT_CATEGORIES;
+    } catch {
+      return DEFAULT_CATEGORIES;
     }
+  });
+
+  // синхронизация категорий между вкладками и событиями
+  useEffect(() => {
+    function load() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("localCategories") || "null");
+        setCategories(Array.isArray(saved) && saved.length ? saved : DEFAULT_CATEGORIES);
+      } catch {
+        setCategories(DEFAULT_CATEGORIES);
+      }
+    }
+
+    load();
+    window.addEventListener("storage", load);
+    window.addEventListener("localCategoriesUpdated", load);
+
+    return () => {
+      window.removeEventListener("storage", load);
+      window.removeEventListener("localCategoriesUpdated", load);
+    };
   }, []);
 
-  function handleLogout() {
-    localStorage.removeItem("user"); // remove user info
-    localStorage.removeItem("accessToken"); 
-    setUser(null)
+  // результаты поиска
+  const [results, setResults] = useState({ categories: [], cards: [] });
+
+  // обработка поиска
+  function onSearchHandler(query) {
+    const q = (query || "").trim().toLowerCase();
+    if (!q) {
+      setResults({ categories: [], cards: [] });
+      return;
+    }
+
+    const categoryMatches = categories.filter(c =>
+      (c.title || "").toLowerCase().includes(q)
+    );
+
+    const cardMatches = [];
+    categories.forEach(c => {
+      (c.cards || []).forEach((card, idx) => {
+        if ((card.label || "").toLowerCase().includes(q)) {
+          cardMatches.push({
+            categoryId: c.id,
+            categoryTitle: c.title,
+            card,
+            cardIndex: idx
+          });
+        }
+      });
+    });
+
+    setResults({ categories: categoryMatches, cards: cardMatches });
+  }
+
+  function openCategory(id) {
+    navigate(`/category/${encodeURIComponent(id)}/0`);
+  }
+
+  function openCard(r) {
+    navigate(`/category/${encodeURIComponent(r.categoryId)}/${r.cardIndex}`);
   }
 
   return (
-    <main className="home">
-      <section className="home-header">
-        <h2 className="home-title">Choose a category</h2>
-        <div className="home-subtitle">Bright and big for kids</div>
+    <main className="home-page">
+      <h1 className="home-heading">Welcome to FlashCards</h1>
+
+      <section className="home-search">
+        <SearchForm onSearchHandler={onSearchHandler} />
       </section>
 
-      <section className="categories" aria-label="categories">
-        {Object.values(CATEGORIES).map((cat) => (
-          <button
-            key={cat.id}
-            className="cat-btn"
-            onClick={() => navigate(`/category/${encodeURIComponent(cat.id)}/0`)}
-            aria-label={`Open ${cat.title}`}
-          >
-            {}
-            <div
-              className="cat-icon"
-              style={{ background: cat.color }}
-            >
-              {cat.title[0]}
-            </div>
+      <section>
+        {results.categories.length === 0 && results.cards.length === 0 ? (
+          <div className="home-muted">
+            Type something in the search to find categories or cards.
+          </div>
+        ) : (
+          <div className="results-grid">
+            {results.categories.length > 0 && (
+              <div className="results-box">
+                <h3>Categories</h3>
 
-            <div className="cat-title">{cat.title}</div>
-            <div className="cat-count">{cat.cards.length} cards</div>
-          </button>
-        ))}
+                {results.categories.map(c => (
+                  <button
+                    key={c.id}
+                    className="result-item"
+                    onClick={() => openCategory(c.id)}
+                  >
+                    <div
+                      className="result-icon"
+                      style={{ background: c.color || "#ddd" }}
+                    >
+                      {(c.title || "").charAt(0)}
+                    </div>
+
+                    <div>
+                      <div className="result-title">{c.title}</div>
+                      <div className="result-sub">{c.id}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {results.cards.length > 0 && (
+              <div className="results-box">
+                <h3>Cards</h3>
+
+                {results.cards.map(r => (
+                  <button
+                    key={r.card.id}
+                    className="result-item"
+                    onClick={() => openCard(r)}
+                  >
+                    <div className="result-icon gray">
+                      {(r.card.label || "").charAt(0)}
+                    </div>
+
+                    <div className="result-flex">
+                      <div className="result-title">{r.card.label}</div>
+                      <div className="result-sub">{r.categoryTitle}</div>
+                    </div>
+
+                    <div className="result-index">
+                      {r.cardIndex + 1}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </section>
     </main>
   );

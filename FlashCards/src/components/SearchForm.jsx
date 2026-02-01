@@ -1,24 +1,30 @@
 import React, { useState } from 'react';
+import "./SearchForm.css"; // Подключаем отдельный CSS файл
 
 const SearchForm = ({ onSearchHandler }) => {
+  // Состояние для хранения значения поиска
   const [searchValue, setSearchValue] = useState("");
 
+  // Обработка отправки формы
   function handleSubmit(e) {
     e.preventDefault();
+    // Вызов функции поиска, переданной из родителя, с обрезанным значением
     onSearchHandler(searchValue.trim());
   }
 
   return (
-    <form className="search-form" onSubmit={handleSubmit} style={{ display: "flex", gap: 8 }}>
+    // Форма поиска
+    <form className="search-form" onSubmit={handleSubmit}>
+      {/* Поле ввода поиска */}
       <input
         type="text"
         className="search-input"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder="Search categories or cards..."
-        style={{ padding: 8, borderRadius: 8, border: "1px solid #e8e8e8", width: 280 }}
       />
-      <button className="button-search" type="submit" style={{ padding: "8px 12px" }}>Search</button>
+      {/* Кнопка поиска */}
+      <button className="button-search" type="submit">Search</button>
     </form>
   );
 };

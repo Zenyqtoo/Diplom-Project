@@ -1,0 +1,72 @@
+/* затемнение фона */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.35);
+  z-index: 2000;
+}
+
+/* карточка модального окна */
+.modal-card {
+  width: 560px;
+  max-width: 95%;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* верхняя панель */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+/* форма */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-form input[type="text"],
+.modal-form input:not([type]) {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+/* строка выбора цвета */
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-row input[type="color"] {
+  width: 44px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* сообщение об ошибке */
+.modal-error {
+  color: crimson;
+}
+
+/* кнопки */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

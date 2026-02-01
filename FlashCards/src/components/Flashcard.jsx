@@ -1,6 +1,5 @@
 import React from "react";
 
-// Компонент карточки
 export default function Flashcard({ card }) {
   return (
     <div className="flashcard">
@@ -9,10 +8,11 @@ export default function Flashcard({ card }) {
         <img src={card.imageUrl} alt={card.label || "card"} />
       </div>
 
-      {/* Нижняя часть*/}
+      {/* Нижняя часть */}
       <div className="flashcard-label">
         <div className="flashcard-text">{card.label}</div>
       </div>
     </div>
   );
 }
+

@@ -2,23 +2,25 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/userService.js";
 
-
 export default function Register() {
   const navigate = useNavigate();
 
+  // Состояния для полей формы
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // Состояния для загрузки и ошибок
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // simple email check
+  // Функция для проверки корректности email
   function isValidEmail(e) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
   }
 
+  // Обработка регистрации при отправке формы
   async function handleRegister(e) {
     e.preventDefault();
     setError("");
@@ -26,6 +28,7 @@ export default function Register() {
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
 
+    // Валидация полей
     if (!trimmedName) {
       setError("Please enter your name.");
       return;
@@ -45,20 +48,24 @@ export default function Register() {
 
     setLoading(true);
     try {
+      // Вызов сервиса регистрации
       const result = await registerUser(trimmedName, trimmedEmail, password);
       console.log("Registration successful:", result);
 
+      // Сохраняем данные пользователя в localStorage
       localStorage.setItem(
-      "user",
-      JSON.stringify({ name: trimmedName, email: trimmedEmail })
-    );
+        "user",
+        JSON.stringify({ name: trimmedName, email: trimmedEmail })
+      );
       alert("Registration successful! You can now log in.");
 
+      // Сброс полей формы после успешной регистрации
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
 
+      // Переход на страницу входа
       navigate("/login");
     } catch (err) {
       console.error("Registration failed:", err);
@@ -70,15 +77,18 @@ export default function Register() {
   }
 
   return (
+    // Основной контейнер страницы регистрации
     <div className="register-page page" style={{ maxWidth: 520, margin: "0 auto", padding: 16 }}>
       <h1 className="register-title">Register</h1>
 
+      {/* Блок отображения ошибок */}
       {error && (
         <div role="alert" style={{ color: "white", background: "#e85d5d", padding: 10, borderRadius: 8, marginBottom: 12 }}>
           {error}
         </div>
       )}
 
+      {/* Форма регистрации */}
       <form className="register-form" onSubmit={handleRegister}>
         <input
           type="text"
@@ -116,6 +126,7 @@ export default function Register() {
           aria-label="Confirm password"
         />
 
+        {/* Кнопка отправки формы */}
         <button
           type="submit"
           className="register-button button"
