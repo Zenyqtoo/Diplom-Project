@@ -27,6 +27,7 @@ function writeLocal(categories) {
 
     // Генерируем кастомное событие для обновления UI
     window.dispatchEvent(new CustomEvent("localCategoriesUpdated", { detail: { ts: Date.now() } }));
+    window.dispatchEvent(new Event("storage"));
   } catch (e) {
     console.warn("Failed to write localCategories", e);
   }
@@ -121,10 +122,17 @@ export async function addCategory({ title, color = "#ffd166", cards = [] }) {
   }
 }
 
-// Добавление новой карточки в категорию
-export async function addCardToCategory(categoryId, card) {
-  const generatedId = `${categoryId}-${Date.now()}`;
-  const newCard = { id: generatedId, ...card };
+
+export async function addCardToCategory(categoryId, cardData) {
+  const generatedId = `card-${categoryId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  
+  
+  const newCard = {
+    id: generatedId,
+    label: cardData.label,
+    imageUrl: cardData.imageUrl || cardData.image, // Поддержка обоих названий
+    speak: cardData.speak || cardData.label
+  };
 
   try {
     // Получаем категорию с сервера
@@ -149,6 +157,7 @@ export async function addCardToCategory(categoryId, card) {
     writeLocal(next);
     return updatedCat;
   } catch (err) {
+    console.log("Server unavailable, saving locally:", err.message);
     // Если сервер недоступен, обновляем только локально
     const local = readLocal();
     const idx = local.findIndex(c => c.id === categoryId);

@@ -1,25 +1,34 @@
 :root{
-  --bg: #fff7f0;               /* фон страницы */
-  --panel: #ffffff;           /* фон карточек */
-  --accent: #ff7aa2;          /* основной акцент */
-  --accent-2: #ffd166;        /* дополнительный акцент */
-  --primary: #4cc9f0;         /* синий акцент */
-  --text: #023047;            /* основной текст */
-  --muted: #6b6b6b;           /* вторичный текст */
-  --radius: 16px;             /* скругление блоков */
-  --card-radius: 18px;        /* скругление карточек */
-  --container-width: 920px;   /* ширина контента */
+  --bg: #fff7f0;               
+  --panel: #ffffff;           
+  --accent: #ff7aa2;          
+  --accent-2: #ffd166;        
+  --primary: #4cc9f0;         
+  --success: #06d6a0;         
+  --text: #023047;            
+  --muted: #6b6b6b;           
+  --radius: 20px;             
+  --card-radius: 24px;        
+  --container-width: 960px;   
 }
 
-*{box-sizing:border-box}
+/* Import fun fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+*{
+  box-sizing:border-box;
+  margin: 0;
+  padding: 0;
+}
 
 /* базовые стили страницы */
 html,body,#root{
   height:100%;
   margin:0;
-  background:linear-gradient(180deg,var(--bg),#fff);
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:linear-gradient(180deg, #fff7f0, #ffe5d9);
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto;
   color:var(--text);
+  font-size: 16px;
 }
 
 /* основной контейнер */
@@ -48,25 +57,31 @@ html,body,#root{
   gap:12px;
 }
 
-/* логотип */
+/* логотип - BIGGER AND BOLDER for kids */
 .logo {
-  width:56px;
-  height:56px;
-  background:var(--accent);
-  border-radius:12px;
+  width:70px;
+  height:70px;
+  background: linear-gradient(135deg, #ff7aa2, #ff9ec4);
+  border-radius:16px;
   display:flex;
   align-items:center;
   justify-content:center;
   color:white;
   font-family: "Fredoka One", cursive;
-  font-size:26px;
-  box-shadow: 0 6px 18px rgba(255,122,162,0.18);
+  font-size:32px;
+  box-shadow: 0 8px 24px rgba(255,122,162,0.3);
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .title {
   font-family: "Fredoka One", cursive;
-  font-size:20px;
+  font-size:26px;
   color:var(--text);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
 }
 
 /* главная страница */
@@ -75,51 +90,81 @@ html,body,#root{
   max-width:var(--container-width);
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:24px;
   align-items:center;
 }
 
-/* сетка категорий */
+/* сетка категорий - BIGGER TILES for kids */
 .categories {
   width:100%;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:16px;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
 }
 
-/* карточка категории */
+/* карточка категории - MORE PLAYFUL */
 .cat-btn {
-  background: linear-gradient(180deg,var(--panel),#fff);
+  background: linear-gradient(180deg, white, #fffbf7);
   border-radius:var(--radius);
-  padding:18px;
+  padding:24px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:8px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  gap:12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   cursor:pointer;
-  border: 3px solid transparent;
-  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
-  font-weight:700;
-  font-size:18px;
+  border: 4px solid transparent;
+  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight:800;
+  font-size:20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cat-btn::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #ffd166, #ff7aa2, #4cc9f0);
+  border-radius: var(--radius);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
 }
 
 .cat-btn:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
 }
 
-/* иконка категории */
+.cat-btn:hover::before {
+  opacity: 1;
+}
+
+.cat-btn:active {
+  transform: translateY(-4px) scale(0.98);
+}
+
+/* иконка категории - BIGGER */
 .cat-icon {
-  width:64px;
-  height:64px;
-  border-radius:14px;
+  width:80px;
+  height:80px;
+  border-radius:18px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:28px;
+  font-size:36px;
   color:white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+
+.cat-btn:hover .cat-icon {
+  transform: scale(1.1) rotate(-5deg);
 }
 
 /* экран просмотра */
@@ -128,50 +173,58 @@ html,body,#root{
   max-width:var(--container-width);
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:16px;
   align-items:center;
 }
 
-/* карточка */
+/* карточка - MORE PROMINENT */
 .card-frame {
   width:100%;
-  background:linear-gradient(180deg,#fff,#fffaf2);
+  background:linear-gradient(180deg, white, #fffbf7);
   border-radius:var(--card-radius);
-  padding:12px;
+  padding:16px;
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:16px;
   align-items:center;
-  box-shadow:0 10px 30px rgba(4, 51, 64, 0.06);
+  box-shadow:0 12px 40px rgba(4, 51, 64, 0.1);
+  border: 4px solid #ffd166;
 }
 
-/* изображение */
+/* изображение - LARGER */
 .card-visual {
   width:100%;
-  max-width:820px;
-  height:360px;
-  background:#f7f7f7;
-  border-radius:12px;
+  max-width:860px;
+  height:420px;
+  background: linear-gradient(135deg, #f7f7f7, #fff);
+  border-radius:16px;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .card-visual img{
   width:100%;
   height:100%;
-  object-fit:cover;
+  object-fit:contain;
+  transition: transform 0.3s ease;
 }
 
-/* название карточки */
+.card-frame:hover .card-visual img {
+  transform: scale(1.05);
+}
+
+/* название карточки - BIGGER AND BOLDER */
 .card-label {
   font-family: "Fredoka One", cursive;
-  font-size:34px;
+  font-size:42px;
   color:var(--text);
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:16px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
 }
 
 /* панель кнопок */
@@ -181,47 +234,86 @@ html,body,#root{
   justify-content:space-between;
   gap:12px;
   align-items:center;
+  flex-wrap: wrap;
 }
 
-/* кнопки */
+/* кнопки - BIGGER AND MORE FUN */
 .btn {
-  background:var(--accent);
+  background: linear-gradient(135deg, #ff7aa2, #ff9ec4);
   color:white;
   border:none;
-  border-radius:12px;
-  padding:12px 18px;
-  font-size:18px;
+  border-radius:14px;
+  padding:14px 24px;
+  font-size:20px;
+  font-weight:700;
   cursor:pointer;
-  box-shadow: 0 6px 18px rgba(255,122,162,0.18);
+  box-shadow: 0 6px 20px rgba(255,122,162,0.25);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Nunito", sans-serif;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 26px rgba(255,122,162,0.35);
+}
+
+.btn:active {
+  transform: translateY(-1px);
 }
 
 .btn.secondary {
-  background:var(--primary);
-  box-shadow: 0 6px 18px rgba(76,201,240,0.14);
+  background: linear-gradient(135deg, #4cc9f0, #72d6f5);
+  box-shadow: 0 6px 20px rgba(76,201,240,0.25);
+}
+
+.btn.secondary:hover {
+  box-shadow: 0 8px 26px rgba(76,201,240,0.35);
+}
+
+.btn.success {
+  background: linear-gradient(135deg, #06d6a0, #1de4b5);
+  box-shadow: 0 6px 20px rgba(6,214,160,0.25);
 }
 
 .btn.ghost {
   background:transparent;
   color:var(--text);
-  border:3px solid rgba(2,48,71,0.06);
+  border:3px solid rgba(2,48,71,0.1);
+  box-shadow: none;
+}
+
+.btn.ghost:hover {
+  background: rgba(2,48,71,0.05);
+  border-color: rgba(2,48,71,0.2);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* мелкие элементы */
 .kf-category-title {
   display:flex;
   align-items:center;
-  gap:10px;
-  font-weight:700;
-  font-size:18px;
+  gap:12px;
+  font-weight:800;
+  font-size:22px;
 }
 
 /* адаптив */
 @media (max-width:720px){
-  .card-visual{height:260px}
-  .card-label { font-size:26px}
-  .logo{width:48px;height:48px;font-size:22px}
-  .title{font-size:18px}
-  .cat-icon { width:56px; height:56px; font-size:24px; border-radius:12px; }
+  .card-visual{height:300px}
+  .card-label { font-size:32px}
+  .logo{width:60px;height:60px;font-size:26px}
+  .title{font-size:20px}
+  .cat-icon { width:64px; height:64px; font-size:28px; }
+  .btn { font-size:18px; padding:12px 20px; }
+  .categories { grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); }
 }
 
 /* заголовок на главной */
@@ -236,22 +328,26 @@ html,body,#root{
 .home-title {
   margin: 0;
   font-family: "Fredoka One", cursive;
-  font-size: 22px;
+  font-size: 28px;
+  color: var(--accent);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
 }
 
 .home-subtitle {
   color: var(--muted);
+  font-size: 18px;
 }
 
 /* текст в карточке категории */
 .cat-title {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
 }
 
 .cat-count {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
+  font-weight: 600;
 }
 
 /* viewer выравнивание по центру */
@@ -272,35 +368,48 @@ html,body,#root{
 .viewer-category {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 /* цветной индикатор категории */
 .category-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 /* название категории */
 .category-name {
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 22px;
 }
 
 /* карточка ошибки */
 .error-card {
   text-align: center;
-  padding: 36px;
+  padding: 48px;
+  background: white;
+  border-radius: var(--radius);
+}
+
+.error-card h3 {
+  font-size: 28px;
+  color: var(--accent);
+  margin-bottom: 12px;
 }
 
 /* текст ошибки */
 .error-muted {
   color: var(--muted);
+  font-size: 18px;
 }
 
 /* отступ сверху */
 .mt-12 {
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 /* контент под карточкой */
@@ -308,7 +417,7 @@ html,body,#root{
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 /* контейнер заголовка карточки */
@@ -316,6 +425,7 @@ html,body,#root{
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 /* пустой spacer для выравнивания */
@@ -326,7 +436,7 @@ html,body,#root{
 /* текст по центру */
 .text-center {
   text-align: center;
-  width: 100%;
+  flex: 2;
 }
 
 /* блок кнопки воспроизведения */
@@ -340,20 +450,27 @@ html,body,#root{
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 /* группа кнопок */
 .controls-group {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-/* счетчик карточек */
+/* счетчик карточек - BIGGER */
 .counter {
-  font-size: 13px;
-  color: var(--muted);
-  min-width: 80px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 90px;
   text-align: right;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 /* Основной контейнер карточки */
@@ -371,62 +488,132 @@ html,body,#root{
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 
 /* Изображение */
 .flashcard-image img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* сохраняет пропорции */
+  object-fit: contain;
+  border-radius: 12px;
 }
 
 /* Нижняя часть с подписью */
 .flashcard-label {
-  padding: 10px;
+  padding: 12px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
 /* Текст подписи */
 .flashcard-text {
-  font-size: 28px;
+  font-size: 36px;
   font-family: "Fredoka One", cursive;
+  color: var(--text);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
 }
 
+/* Auth pages */
 .register-page, .login-page {
-  max-width: 520px;
+  max-width: 540px;
   margin: 0 auto;
-  padding: 16px;
-  background: linear-gradient(180deg,#fff,#fffaf2);
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+  padding: 24px;
+  background: linear-gradient(180deg, white, #fffbf7);
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  border: 4px solid #ffd166;
+}
+
+.register-page h1, .login-page h1 {
+  font-family: "Fredoka One", cursive;
+  color: var(--accent);
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .register-form input,
 .login-form input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 10px;
-  border: 1px solid #eee;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 3px solid #ffd166;
+  font-size: 16px;
+  font-family: "Nunito", sans-serif;
+  transition: border-color 0.2s ease;
+}
+
+.register-form input:focus,
+.login-form input:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 .register-button, .login-button {
-  padding: 10px 14px;
-  border-radius: 10px;
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
   border: none;
-  background: var(--accent);
+  background: linear-gradient(135deg, #ff7aa2, #ff9ec4);
   color: white;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255,122,162,0.25);
+  transition: all 0.2s ease;
+  font-family: "Nunito", sans-serif;
+}
+
+.register-button:hover, .login-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 26px rgba(255,122,162,0.35);
+}
+
+/* Footer */
+footer {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 12px;
+}
+
+/* Search results */
+.search-results {
+  width: 100%;
 }
 
 .search-results .result {
   display:flex;
-  gap:12px;
+  gap:14px;
   align-items:center;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid #f0f0f0;
+  padding:14px;
+  border-radius:12px;
+  border:3px solid #f7f7f7;
   background:white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.search-results .result:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  border-color: var(--accent-2);
+}
+
+/* Loading animation */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.loading {
+  animation: bounce 0.6s ease-in-out infinite;
 }

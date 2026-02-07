@@ -11,11 +11,12 @@
 
 /* Основной контейнер модального окна */
 .create-card-modal-container {
-  width: 560px;
-  max-width: 95%;
+  width: 600px;
+  max-width: 90%;
   background: white;
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
 }
 
 /* Верхняя панель с заголовком и кнопкой закрытия */
@@ -23,29 +24,160 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.create-card-modal-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #ff7aa2;
+  font-family: 'Fredoka One', cursive;
+}
+
+.create-card-modal-header .btn.ghost {
+  font-size: 24px;
+  padding: 8px 16px;
 }
 
 /* Форма модального окна */
 .create-card-modal-form {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+}
+
+/* Лейблы формы */
+.create-card-modal-label {
+  font-weight: 700;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
 /* Поля ввода */
-.create-card-modal-input {
-  padding: 10px;
+.create-card-modal-input,
+.create-card-modal-select {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 3px solid #ffd166;
+  font-family: 'Nunito', sans-serif;
+  transition: border-color 0.2s ease;
+}
+
+.create-card-modal-input:focus,
+.create-card-modal-select:focus {
+  outline: none;
+  border-color: #ff7aa2;
+}
+
+.create-card-modal-select {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Подсказка под полем */
+.create-card-modal-hint {
+  color: #666;
+  font-size: 14px;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* Контейнер превью изображения */
+.create-card-modal-preview {
+  margin-top: 10px;
+  text-align: center;
+  padding: 16px;
+  background: #f7f7f7;
+  border-radius: 12px;
+}
+
+.create-card-modal-preview-title {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+/* Само изображение превью */
+.create-card-modal-preview-image {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 12px;
+  border: 3px solid #ffd166;
+  object-fit: contain;
+}
+
+/* Сообщение об ошибке превью */
+.create-card-modal-preview-error {
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  border: 3px dashed #ff7aa2;
+}
+
+.create-card-modal-preview-error p {
+  color: #ff7aa2;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Сообщение об ошибке */
+.create-card-modal-error {
+  background: #ffe0e0;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #d32f2f;
+  font-weight: 600;
+  border: 2px solid #ff7aa2;
 }
 
 /* Контейнер кнопок внизу */
 .create-card-modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
-/* Сообщение об ошибке */
-.create-card-modal-error {
-  color: crimson;
+.create-card-modal-footer .btn {
+  font-size: 18px;
+  padding: 12px 24px;
+  font-weight: 700;
+}
+
+.create-card-modal-footer .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 640px) {
+  .create-card-modal-container {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .create-card-modal-header h2 {
+    font-size: 24px;
+  }
+
+  .create-card-modal-label {
+    font-size: 16px;
+  }
+
+  .create-card-modal-input,
+  .create-card-modal-select {
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .create-card-modal-footer .btn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
 }

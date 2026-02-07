@@ -1,43 +1,81 @@
-// Регистрация нового пользователя
+// User authentication service
+
+/**
+ * Register a new user
+ */
 export async function registerUser(name, email, password) {
-  // Получаем текущих пользователей из localStorage
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  try {
+    // Get existing users from localStorage
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    
+    // Check if email already exists
+    if (users.some(u => u.email === email)) {
+      throw new Error("Email already registered");
+    }
 
-  // Проверяем, есть ли уже пользователь с таким email
-  const exists = users.find(u => u.email === email);
-  if (exists) {
-    throw new Error("User already exists"); // если есть — выбрасываем ошибку
+    // Create new user
+    const newUser = {
+      id: `user-${Date.now()}`,
+      name,
+      email,
+      password, // In production, this should be hashed!
+      createdAt: new Date().toISOString()
+    };
+
+    // Save user
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    return { success: true, user: { id: newUser.id, name, email } };
+  } catch (error) {
+    console.error("Registration error:", error);
+    throw error;
   }
-
-  // Добавляем нового пользователя в массив
-  users.push({ name, email, password });
-
-  // Сохраняем обновленный список пользователей в localStorage
-  localStorage.setItem("users", JSON.stringify(users));
-
-  return { success: true };
 }
 
-// Логин пользователя
+/**
+ * Login user
+ */
 export async function loginUser(email, password) {
-  // Получаем текущих пользователей из localStorage
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  try {
+    // Get users from localStorage
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    
+    // Find user
+    const user = users.find(u => u.email === email && u.password === password);
+    
+    if (!user) {
+      throw new Error("Invalid email or password");
+    }
 
-  // Ищем пользователя с совпадающим email и паролем
-  const user = users.find(
-    u => u.email === email && u.password === password
-  );
+    // Save current user
+    const currentUser = { id: user.id, name: user.name, email: user.email };
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    localStorage.setItem("accessToken", `token-${Date.now()}`);
 
-  if (!user) {
-    throw new Error("Invalid email or password"); // если нет совпадения — выбрасываем ошибку
+    return { success: true, user: currentUser };
+  } catch (error) {
+    console.error("Login error:", error);
+    throw error;
   }
-
-  // Сохраняем текущего пользователя в localStorage
-  localStorage.setItem(
-    "currentUser",
-    JSON.stringify({ name: user.name, email: user.email })
-  );
-
-  return { success: true, user };
 }
 
+/**
+ * Get current user
+ */
+export function getCurrentUser() {
+  try {
+    const user = localStorage.getItem("currentUser");
+    return user ? JSON.parse(user) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Logout user
+ */
+export function logoutUser() {
+  localStorage.removeItem("currentUser");
+  localStorage.removeItem("accessToken");
+}
