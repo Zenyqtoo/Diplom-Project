@@ -1,3 +1,5 @@
+/* Home Page*/
+
 /* основной контейнер страницы */
 .home-page {
   max-width: 920px;
@@ -5,36 +7,42 @@
   padding: 0 16px;
 }
 
+/* Заголовок страницы */
 .home-heading {
   margin-bottom: 12px;
 }
 
+/* секция поиска */
 .home-search {
   margin-bottom: 16px;
 }
 
+/* текст для пустого состояния поиска */
 .home-muted {
   color: #666;
 }
 
-/* сетка результатов */
+/* сетка результатов поиска */
 .results-grid {
   display: grid;
   gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* адаптивные колонки */
 }
 
-/* контейнер категорий / карточек */
+/* контейнер для категорий или карточек */
 .results-box {
   background: #fff;
   border-radius: 8px;
   padding: 12px;
 }
 
+/* заголовок внутри контейнера */
 .results-box h3 {
   margin-top: 0;
+  font-size: 1.1rem;
 }
 
-/* элемент результата */
+/* отдельный элемент результата (карточка или категория) */
 .result-item {
   display: flex;
   gap: 12px;
@@ -46,13 +54,15 @@
   text-align: left;
   cursor: pointer;
   border-radius: 8px;
+  transition: background 0.2s;
 }
 
+/* hover эффект для элемента результата */
 .result-item:hover {
   background: #f7f7f7;
 }
 
-/* иконка */
+/* иконка результата */
 .result-icon {
   width: 44px;
   height: 44px;
@@ -62,28 +72,184 @@
   justify-content: center;
   color: #fff;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
+/* серый стиль иконки для карточек */
 .result-icon.gray {
   background: #f2f2f2;
   color: #333;
 }
 
-/* текст */
+/* текст заголовка результата */
 .result-title {
   font-weight: 700;
 }
 
+/* подзаголовок / доп. информация */
 .result-sub {
   font-size: 12px;
   color: #666;
 }
 
+/* флекс-контейнер для текста */
 .result-flex {
   flex: 1;
 }
 
+/* индекс карточки */
 .result-index {
   font-size: 12px;
   color: #666;
+}
+
+/*  Адаптивность (Mobile)*/
+@media (max-width: 640px) {
+  .home-page {
+    margin: 16px auto;
+    padding: 0 12px;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr; /* вертикальный стэк */
+    gap: 10px;
+  }
+
+  .results-box {
+    padding: 10px;
+  }
+
+  .result-item {
+    flex-direction: row;
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .result-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .result-title {
+    font-size: 0.95rem;
+  }
+
+  .result-sub,
+  .result-index {
+    font-size: 11px;
+  }
+}
+
+/* =========================
+   Сетка категорий (домашние кнопки)
+========================= */
+
+/* контейнер для всех категорий */
+.categories-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* отдельная карточка категории */
+.cat-btn {
+  background: linear-gradient(180deg, #fff, #fff7f0);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  border: 4px solid transparent;
+  transition: all 0.2s ease;
+  font-weight: 700;
+  font-size: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* hover эффект для карточки категории */
+.cat-btn:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+/* активное нажатие */
+.cat-btn:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* цветная граница при hover */
+.cat-btn::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #ffd166, #ff7aa2, #4cc9f0);
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.cat-btn:hover::before {
+  opacity: 1;
+}
+
+/* иконка внутри карточки категории */
+.cat-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+
+/* hover эффект для иконки */
+.cat-btn:hover .cat-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+/* название категории */
+.cat-title {
+  font-family: "Fredoka One", cursive;
+  font-size: 20px;
+  color: #023047;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Адаптивность (Mobile)*/
+@media (max-width: 640px) {
+  .categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .cat-btn {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  .cat-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+
+  .cat-title {
+    font-size: 18px;
+  }
 }

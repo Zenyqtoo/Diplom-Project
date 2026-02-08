@@ -1,3 +1,4 @@
+/* основная навигация */
 nav.navbar {
   display: flex;
   align-items: center;
@@ -5,8 +6,11 @@ nav.navbar {
   padding: 12px;
   border-bottom: 1px solid #eee;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* логотип и текст рядом */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -15,6 +19,7 @@ nav.navbar {
   text-decoration: none;
 }
 
+/* кнопка гамбургера для мобилок */
 .hamburger-button {
   background: transparent;
   border: none;
@@ -23,25 +28,30 @@ nav.navbar {
   cursor: pointer;
 }
 
+/* пустое пространство между элементами */
 .navbar-spacer {
   flex: 1;
 }
 
+/* правая часть навбара с кнопками */
 .navbar-right {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+/* ссылки навигации */
 .nav-links {
   display: flex;
   gap: 8px;
 }
 
+/* скрываем ссылки при мобилке */
 .nav-links.hidden {
   display: none;
 }
 
+/* отдельная ссылка */
 .nav-link {
   cursor: pointer;
   background: none;
@@ -49,6 +59,7 @@ nav.navbar {
   font: inherit;
 }
 
+/* стиль ghost-кнопок */
 .btn.ghost {
   background: none;
   border: 1px solid #ccc;
@@ -56,10 +67,29 @@ nav.navbar {
   cursor: pointer;
 }
 
+/* кнопки логина/регистрации */
 .nav-login {
   cursor: pointer;
+  padding: 8px 16px;
+  margin-left: 8px;
+  background-color: #d8a76b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.3s;
 }
 
+.nav-login:hover {
+  background-color: #5b3501;
+}
+
+.nav-login:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* мобильное меню */
 .mobile-menu {
   position: absolute;
   left: 0;
@@ -76,31 +106,160 @@ nav.navbar {
   padding: 12px;
 }
 
+/* ссылки внутри моб. меню */
 .mobile-link {
   padding: 8px 0;
   text-decoration: none;
   cursor: pointer;
 }
 
-/* Стили для кнопок авторизации / выхода */
-.nav-login {
-  padding: 8px 16px;           
-  margin-left: 8px;            
-  background-color: #d8a76b;   
-  color: white;                
-  border: none;               
-  border-radius: 8px;          
-  cursor: pointer;            
-  font-weight: 500;         
-  transition: background 0.3s;
+/* страницы регистрации и логина */
+.register-page, .login-page {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
-.nav-login:hover {
-  background-color: #5b3501; 
+/* заголовки на страницах */
+.register-title, .login-title {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-.nav-login:disabled {
-  opacity: 0.6;     
-  cursor: not-allowed; 
+/* форма на страницах */
+.register-form, .login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
+
+/* поля ввода */
+.register-input, .login-input {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* кнопки регистрации/логина */
+.register-button, .login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #ff7aa2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  transition: opacity 0.2s;
+}
+
+.register-button:disabled, .login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* сообщения об ошибках */
+.register-error, .login-error {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.register-error {
+  color: white;
+  background: #ff7aa2;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.login-error {
+  color: red;
+}
+
+/* ссылки для перехода между регистрацией и логином */
+.register-login-link, .login-register-link {
+  margin-top: 16px;
+  text-align: center;
+  color: #666;
+}
+
+.register-login-link button, .login-register-link button {
+  background: none;
+  border: none;
+  color: #ff7aa2;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* адаптив для мобилок */
+@media (max-width: 640px) {
+  nav.navbar {
+    flex-wrap: wrap; 
+    gap: 8px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 6px;
+  }
+
+  .navbar-right {
+    gap: 6px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .nav-login {
+    flex: 1 1 auto; /* растягиваем кнопку на ширину */
+    text-align: center;
+    margin-left: 0;
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .mobile-menu {
+    top: 56px; /* чуть ниже хедера */
+  }
+
+  .mobile-menu div {
+    padding: 8px;
+  }
+
+  .register-page, .login-page {
+    padding: 16px;
+  }
+
+  .register-title, .login-title {
+    font-size: 1.5rem;
+  }
+
+  .register-input, .login-input {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .register-button, .login-button {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .register-login-link button, .login-register-link button {
+    font-size: 0.95rem;
+  }
+}
+
+
 

@@ -1,18 +1,23 @@
-/* Контейнер формы поиска */
+/* форма поиска - горизонтально, с небольшим промежутком */
 .search-form {
   display: flex;
-  gap: 8px; /* Расстояние между полем ввода и кнопкой */
+  gap: 8px; /* расстояние между полем и кнопкой */
+  flex-wrap: wrap; /* на маленьких экранах поля могут переноситься */
+  align-items: center;
 }
 
-/* Поле ввода поиска */
+/* поле ввода текста */
 .search-input {
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #e8e8e8;
   width: 280px;
+  flex: 1; /* занимает оставшееся место на маленьких экранах */
+  min-width: 0; /* предотвращает выход за пределы контейнера */
+  box-sizing: border-box;
 }
 
-/* Кнопка поиска */
+/* кнопка поиска */
 .button-search {
   padding: 8px 12px;
   border: none;
@@ -21,9 +26,32 @@
   color: white;
   cursor: pointer;
   transition: background 0.2s;
+  flex-shrink: 0; /* фиксированный размер кнопки */
 }
 
 .button-search:hover {
-  background-color: #5b3501;
+  background-color: #5b3501; /* цвет при наведении */
 }
+
+/* адаптив для мобилок */
+@media (max-width: 640px) {
+  .search-form {
+    flex-direction: column; /* вертикально для мобильных */
+    gap: 6px;
+  }
+
+  .search-input {
+    width: 100%; /* полностью ширина на мобилках */
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .button-search {
+    width: 100%; /* кнопка тоже на всю ширину */
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+}
+
+
 

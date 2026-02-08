@@ -124,7 +124,14 @@
       "id": "instruments",
       "title": "Instruments",
       "color": "#42b3c2",
-      "cards": []
+      "cards": [
+        {
+          "id": "card-instruments-1770534242895-53jlg2di8",
+          "label": "Guitar",
+          "imageUrl": "https://t4.ftcdn.net/jpg/00/94/53/05/360_F_94530546_gEaAcofmlkgs9CWrCTeM1Dh7ObCMUYL1.jpg",
+          "speak": "Guitar"
+        }
+      ]
     }
   ],
   "progress": []

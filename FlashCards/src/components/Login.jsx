@@ -1,67 +1,90 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/userService.js";
+import { UserLock, KeyRound, Rocket, TriangleAlert } from "lucide-react";
+import "./NavBar.css"; // стили для страницы
 
 const Login = () => {
-  const navigate = useNavigate(); // для перехода между страницами
+  const navigate = useNavigate(); // хук для перехода между страницами
 
-  const [email, setEmail] = useState(""); 
-  const [password, setPassword] = useState(""); 
-  const [error, setError] = useState(null); 
-  const [loading, setLoading] = useState(false); 
+  // состояния для формы
+  const [email, setEmail] = useState(""); // email
+  const [password, setPassword] = useState(""); // пароль
+  const [error, setError] = useState(null); // ошибки входа
+  const [loading, setLoading] = useState(false); // индикатор загрузки
 
+  // обработчик формы логина
   const loginHandler = async (e) => {
-    e.preventDefault(); // отменяем стандартное поведение формы
-    setError(null);
-    setLoading(true);
+    e.preventDefault(); // чтобы страница не перезагружалась
+    setError(null); // очищаем ошибки
+    setLoading(true); // ставим индикатор загрузки
 
     try {
-      const result = await loginUser(email, password); // вызов сервиса логина
+      const result = await loginUser(email, password); // вызываем сервис логина
 
       if (result?.success) {
-        navigate("/"); // переход на главную страницу при успешном входе
+        // если логин успешен, уведомляем другие вкладки
+        window.dispatchEvent(new Event("authChange"));
+        navigate("/"); // переходим на домашнюю страницу
       } else {
-        setError("Invalid login"); 
+        setError("Неверный логин или пароль"); // сообщение об ошибке
       }
     } catch (err) {
       console.error("Login failed:", err);
-      setError(err.message || "Login failed");
+      setError(err.message || "Ошибка входа"); // вывод ошибки
     } finally {
-      setLoading(false); // выключаем состояние загрузки
+      setLoading(false); // выключаем индикатор загрузки
     }
   };
 
   return (
     <div className="login-page page">
-      <h1 className="login-title">Login</h1>
+      {/* Заголовок страницы */}
+      <h1 className="login-title"><UserLock /> Login</h1>
 
+      {/* Форма логина */}
       <form className="login-form" onSubmit={loginHandler}>
+        {/* Поле email */}
         <input
           type="email"
           placeholder="Email"
           className="login-input input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          disabled={loading} // блокируем поле при загрузке
+          disabled={loading} // блокируем во время загрузки
+          required
         />
 
+        {/* Поле пароль */}
         <input
           type="password"
           placeholder="Password"
           className="login-input input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          disabled={loading} // блокируем поле при загрузке
+          disabled={loading}
+          required
         />
 
-        <button type="submit" className="login-button button" disabled={loading}>
-          {loading ? "Logging in…" : "Login"} {/* индикатор загрузки */}
+        {/* Кнопка входа */}
+        <button type="submit" className="login-button" disabled={loading}>
+          {loading 
+            ? <><KeyRound className="loading-icon" /> Logging in…</> 
+            : <><Rocket className="rocket-icon" /> Login</>}
         </button>
       </form>
 
-      {error && <div style={{ color: "red", marginTop: 12 }}>{error}</div>}
+      {/* Ошибки при входе */}
+      {error && <div className="login-error"><TriangleAlert /> {error}</div>}
+
+      {/* Ссылка на регистрацию */}
+      <div className="login-register-link">
+        Нет аккаунта?{" "}
+        <button onClick={() => navigate("/register")}>Зарегистрироваться</button>
+      </div>
     </div>
   );
 };
 
 export default Login;
+

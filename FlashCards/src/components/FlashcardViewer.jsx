@@ -4,10 +4,10 @@ import Flashcard from "./Flashcard.jsx";
 import { ArrowLeft, ArrowRight, Dices, Play, Volume2 } from "lucide-react";
 
 export default function FlashcardViewer() {
-  const { id, index: indexParam } = useParams();
-  const navigate = useNavigate();
+  const { id, index: indexParam } = useParams(); // получаем id категории и индекс карточки из URL
+  const navigate = useNavigate(); // хук для перехода между страницами
 
-  // Get categories from localStorage
+  // состояния для категорий
   const [categories, setCategories] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("localCategories") || "null");
@@ -17,7 +17,7 @@ export default function FlashcardViewer() {
     }
   });
 
-  // Listen for localStorage changes
+  // слушаем изменения в localStorage
   useEffect(() => {
     function onStorage() {
       try {
@@ -33,9 +33,10 @@ export default function FlashcardViewer() {
     };
   }, []);
 
-  // Find the selected category
+  // находим выбранную категорию
   const cat = categories.find((c) => c.id === id);
 
+  // если категория не найдена
   if (!cat) {
     return (
       <section className="viewer viewer-center">
@@ -44,14 +45,11 @@ export default function FlashcardViewer() {
             <ArrowLeft size={20} /> Back
           </button>
         </div>
-
         <div className="card-frame error-card">
           <h3>Oops! Category not found</h3>
           <p className="error-muted">Let's go back to the home screen and try again!</p>
           <div className="mt-12">
-            <button className="btn" onClick={() => navigate("/")}>
-               Go Home
-            </button>
+            <button className="btn" onClick={() => navigate("/")}>Go Home</button>
           </div>
         </div>
       </section>
@@ -60,6 +58,7 @@ export default function FlashcardViewer() {
 
   const total = cat.cards.length;
 
+  // если карточек в категории нет
   if (total === 0) {
     return (
       <section className="viewer viewer-center">
@@ -68,20 +67,18 @@ export default function FlashcardViewer() {
             <ArrowLeft size={20} /> Back
           </button>
         </div>
-
         <div className="card-frame error-card">
-          <h3> No cards yet!</h3>
+          <h3>No cards yet!</h3>
           <p className="error-muted">This category is empty. Add some cards to get started!</p>
           <div className="mt-12">
-            <button className="btn" onClick={() => navigate("/")}>
-               Go Home
-            </button>
+            <button className="btn" onClick={() => navigate("/")}>Go Home</button>
           </div>
         </div>
       </section>
     );
   }
 
+  // определяем индекс карточки
   const parsedIndex = (() => {
     if (typeof indexParam === "undefined") return 0;
     const p = Number(indexParam);
@@ -89,51 +86,20 @@ export default function FlashcardViewer() {
     return Math.min(Math.max(0, p), total - 1);
   })();
 
-  const [index, setIndex] = useState(parsedIndex);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [index, setIndex] = useState(parsedIndex); // текущий индекс карточки
+  const [isPlaying, setIsPlaying] = useState(false); // индикатор озвучки
 
+  // обновляем URL при смене карточки
   useEffect(() => {
     navigate(`/category/${encodeURIComponent(cat.id)}/${index}`, {
       replace: true,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
+  // свайпы на карточках
   const touchStartX = useRef(null);
   const touchStartY = useRef(null);
   const pointerDown = useRef(false);
-
-  useEffect(() => {
-    function onKey(e) {
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === " ") {
-        e.preventDefault();
-        speak(cat.cards[index].label);
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index]);
-
-  function next() {
-    if (index < total - 1) {
-      setIndex((i) => i + 1);
-    } else {
-      // Loop back to start with visual feedback
-      setIndex(0);
-    }
-  }
-
-  function prev() {
-    if (index > 0) {
-      setIndex((i) => i - 1);
-    } else {
-      // Loop to end with visual feedback
-      setIndex(total - 1);
-    }
-  }
 
   function onPointerDown(e) {
     pointerDown.current = true;
@@ -147,12 +113,12 @@ export default function FlashcardViewer() {
 
     const endX = e.clientX ?? (e.changedTouches && e.changedTouches[0].clientX);
     const endY = e.clientY ?? (e.changedTouches && e.changedTouches[0].clientY);
-
     if (endX == null || touchStartX.current == null) return;
 
     const dx = endX - touchStartX.current;
     const dy = endY - touchStartY.current;
 
+    // определяем свайп влево/вправо
     if (Math.abs(dx) > 50 && Math.abs(dy) < 80) {
       if (dx < 0) next();
       else prev();
@@ -162,10 +128,35 @@ export default function FlashcardViewer() {
     touchStartY.current = null;
   }
 
+  // обработка стрелок и пробела
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === " ") {
+        e.preventDefault();
+        speak(cat.cards[index].label);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [index]);
+
+  function next() {
+    if (index < total - 1) setIndex((i) => i + 1);
+    else setIndex(0); // если дошли до конца, начинаем сначала
+  }
+
+  function prev() {
+    if (index > 0) setIndex((i) => i - 1);
+    else setIndex(total - 1); // если в начале, идем в конец
+  }
+
+  // озвучка карточки
   function speak(text) {
     try {
       if (!("speechSynthesis" in window)) {
-        alert(" Speech is not available in this browser.");
+        alert("Speech is not available in this browser.");
         return;
       }
 
@@ -173,9 +164,9 @@ export default function FlashcardViewer() {
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "en-US";
       utter.volume = 0.9;
-      utter.rate = 0.8; 
-      utter.pitch = 1.1; 
-      
+      utter.rate = 0.8;
+      utter.pitch = 1.1;
+
       utter.onend = () => setIsPlaying(false);
       utter.onerror = () => setIsPlaying(false);
 
@@ -189,6 +180,7 @@ export default function FlashcardViewer() {
 
   return (
     <section className="viewer viewer-center">
+      {/* шапка с названием категории */}
       <div className="viewer-header">
         <div className="kf-category-title">
           <button 
@@ -200,20 +192,15 @@ export default function FlashcardViewer() {
           </button>
 
           <div className="viewer-category">
-            <div
-              className="category-dot"
-              style={{ background: cat.color }}
-              aria-hidden="true"
-            />
+            <div className="category-dot" style={{ background: cat.color }} aria-hidden="true" />
             <div className="category-name">{cat.title}</div>
           </div>
         </div>
 
-        <div className="counter">
-           {index + 1} / {total}
-        </div>
+        <div className="counter">{index + 1} / {total}</div>
       </div>
 
+      {/* основная карточка */}
       <div
         className="card-frame"
         onPointerDown={onPointerDown}
@@ -225,6 +212,7 @@ export default function FlashcardViewer() {
           <Flashcard card={cat.cards[index]} />
         </div>
 
+        {/* подпись и кнопка озвучки */}
         <div className="card-content">
           <div className="card-label card-label-row">
             <div className="flex-spacer" />
@@ -249,31 +237,18 @@ export default function FlashcardViewer() {
             </div>
           </div>
 
+          {/* кнопки навигации */}
           <div className="controls controls-row">
             <div className="controls-group">
-              <button 
-                className="btn ghost" 
-                onClick={prev} 
-                aria-label="Previous card"
-                style={{ fontSize: "18px" }}
-              >
+              <button className="btn ghost" onClick={prev} aria-label="Previous card" style={{ fontSize: "18px" }}>
                 <ArrowLeft size={22} /> Back
               </button>
               
-              <button
-                className="btn"
-                onClick={() => setIndex(Math.floor(Math.random() * total))}
-                style={{ fontSize: "18px" }}
-              >
+              <button className="btn" onClick={() => setIndex(Math.floor(Math.random() * total))} style={{ fontSize: "18px" }}>
                 <Dices size={22} /> Surprise!
               </button>
               
-              <button 
-                className="btn ghost" 
-                onClick={next} 
-                aria-label="Next card"
-                style={{ fontSize: "18px" }}
-              >
+              <button className="btn ghost" onClick={next} aria-label="Next card" style={{ fontSize: "18px" }}>
                 Next <ArrowRight size={22} />
               </button>
             </div>
@@ -281,6 +256,7 @@ export default function FlashcardViewer() {
         </div>
       </div>
 
+      {/* подсказка для пользователя */}
       <div style={{ 
         textAlign: "center", 
         fontSize: "16px", 
@@ -296,6 +272,7 @@ export default function FlashcardViewer() {
     </section>
   );
 }
+
 
 
 

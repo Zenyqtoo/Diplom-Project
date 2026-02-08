@@ -1,141 +1,152 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/userService.js";
+import { FilePlus, Rocket, Hourglass } from "lucide-react";
+import "./NavBar.css"; // стили для страницы регистрации
 
-export default function Register() {
-  const navigate = useNavigate();
+function Register() {
+  const navigate = useNavigate(); // хук для перехода на другую страницу
 
-  // Состояния для полей формы
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // состояния для формы
+  const [name, setName] = useState(""); // имя пользователя
+  const [email, setEmail] = useState(""); // email
+  const [password, setPassword] = useState(""); // пароль
+  const [confirmPassword, setConfirmPassword] = useState(""); // подтверждение пароля
+  const [loading, setLoading] = useState(false); // показываем загрузку при отправке
+  const [error, setError] = useState(""); // сообщение об ошибке
 
-  // Состояния для загрузки и ошибок
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  // Функция для проверки корректности email
+  // проверяем, что email валидный
   function isValidEmail(e) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
   }
 
-  // Обработка регистрации при отправке формы
+  // когда пользователь отправляет форму
   async function handleRegister(e) {
-    e.preventDefault();
-    setError("");
+    e.preventDefault(); // чтобы страница не перезагружалась
+    setError(""); // убираем старые ошибки
 
-    const trimmedName = name.trim();
+    const trimmedName = name.trim(); // убираем лишние пробелы
     const trimmedEmail = email.trim();
 
-    // Валидация полей
+    // простая валидация
     if (!trimmedName) {
-      setError("Please enter your name.");
+      setError("Введите своё имя");
       return;
     }
     if (!isValidEmail(trimmedEmail)) {
-      setError("Please enter a valid email address.");
+      setError("Введите корректный email");
       return;
     }
     if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
+      setError("Пароль должен быть минимум 6 символов");
       return;
     }
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError("Пароли не совпадают");
       return;
     }
 
-    setLoading(true);
+    setLoading(true); // включаем загрузку
     try {
-      // Вызов сервиса регистрации
-      const result = await registerUser(trimmedName, trimmedEmail, password);
-      console.log("Registration successful:", result);
+      const result = await registerUser(trimmedName, trimmedEmail, password); // вызов API регистрации
+      console.log("Регистрация успешна:", result);
 
-      // Сохраняем данные пользователя в localStorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ name: trimmedName, email: trimmedEmail })
-      );
-      alert("Registration successful! You can now log in.");
+      alert(`Регистрация успешна! Добро пожаловать, ${trimmedName}!`);
 
-      // Сброс полей формы после успешной регистрации
+      // очищаем поля формы после успешной регистрации
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
 
-      // Переход на страницу входа
-      navigate("/login");
+      navigate("/login"); // переходим на страницу логина
     } catch (err) {
-      console.error("Registration failed:", err);
-      const msg = err?.body?.message || err.message || "Registration failed";
-      setError(msg);
+      console.error("Ошибка регистрации:", err);
+      setError(err?.message || "Ошибка регистрации"); // показываем ошибку
     } finally {
-      setLoading(false);
+      setLoading(false); // выключаем загрузку
     }
   }
 
   return (
-    // Основной контейнер страницы регистрации
-    <div className="register-page page" style={{ maxWidth: 520, margin: "0 auto", padding: 16 }}>
-      <h1 className="register-title">Register</h1>
+    <div className="register-page page">
+      {/* Заголовок с иконкой */}
+      <h1 className="register-title"><FilePlus /> Create Account</h1>
 
-      {/* Блок отображения ошибок */}
-      {error && (
-        <div role="alert" style={{ color: "white", background: "#e85d5d", padding: 10, borderRadius: 8, marginBottom: 12 }}>
-          {error}
-        </div>
-      )}
+      {/* если есть ошибка, показываем */}
+      {error && <div role="alert" className="register-error">⚠️ {error}</div>}
 
-      {/* Форма регистрации */}
+      {/* сама форма */}
       <form className="register-form" onSubmit={handleRegister}>
+        {/* имя */}
         <input
           type="text"
-          placeholder="Name"
+          placeholder="Full Name"
           className="register-input input"
           value={name}
           onChange={(e) => setName(e.target.value)}
           aria-label="Name"
+          disabled={loading} // блокируем, если идет отправка
+          required
         />
 
+        {/* email */}
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email Address"
           className="register-input input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           aria-label="Email"
+          disabled={loading}
+          required
         />
 
+        {/* пароль */}
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Password (min. 6 characters)"
           className="register-input input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           aria-label="Password"
+          disabled={loading}
+          required
         />
 
+        {/* подтверждение пароля */}
         <input
           type="password"
-          placeholder="Confirm password"
+          placeholder="Confirm Password"
           className="register-input input"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           aria-label="Confirm password"
+          disabled={loading}
+          required
         />
 
-        {/* Кнопка отправки формы */}
-        <button
-          type="submit"
-          className="register-button button"
-          disabled={loading}
-          style={{ opacity: loading ? 0.7 : 1 }}
-        >
-          {loading ? "Registering…" : "Register"}
+        {/* кнопка регистрации */}
+        <button type="submit" className="register-button" disabled={loading}>
+          {loading ? (
+            <>
+              <Hourglass size={16} /> Creating Account...
+            </>
+          ) : (
+            <>
+              <Rocket size={16} /> Register
+            </>
+          )}
         </button>
       </form>
+
+      {/* ссылка на логин */}
+      <div className="register-login-link">
+        Уже есть аккаунт?{" "}
+        <button onClick={() => navigate("/login")}>Войти</button>
+      </div>
     </div>
   );
 }
+
+export default Register;

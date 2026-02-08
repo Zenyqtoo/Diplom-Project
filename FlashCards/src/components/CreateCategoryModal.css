@@ -1,36 +1,44 @@
-/* затемнение фона */
+/* затемнение фона модалки */
 .modal-overlay {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.35); /* полупрозрачный фон */
   z-index: 2000;
+  padding: 10px; /* немного отступа для маленьких экранов */
+  overflow-y: auto; /* прокрутка при переполнении */
 }
 
-/* карточка модального окна */
+/* основная карточка модального окна */
 .modal-card {
   width: 560px;
-  max-width: 95%;
+  max-width: 95%; /* чтобы не вылазило на мобилках */
   background: white;
   border-radius: 12px;
   padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-/* верхняя панель */
+/* верхняя панель с заголовком и кнопкой закрытия */
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  flex-wrap: wrap; /* перенос заголовка и крестика на маленьких экранах */
 }
 
 .modal-header h3 {
   margin: 0;
+  font-size: 1.5rem;
+  flex: 1 1 auto; /* занимает доступное место */
 }
 
-/* форма */
+/* форма внутри модалки */
 .modal-form {
   display: flex;
   flex-direction: column;
@@ -42,6 +50,9 @@
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #eee;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* строка выбора цвета */
@@ -49,6 +60,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap; /* перенос цветов на маленьких экранах */
 }
 
 .color-row input[type="color"] {
@@ -56,17 +68,63 @@
   height: 34px;
   border: none;
   background: transparent;
-  cursor: pointer;
+  cursor: pointer; /* курсор при наведении */
 }
 
 /* сообщение об ошибке */
 .modal-error {
   color: crimson;
+  font-size: 0.9rem;
+  margin-top: 4px;
 }
 
-/* кнопки */
+/* кнопки действий */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+  flex-wrap: wrap; /* перенос кнопок на маленьких экранах */
 }
+
+.modal-actions .btn {
+  padding: 10px 16px;
+  font-size: 1rem;
+  flex: 1 1 auto; /* растягиваются на мобильных */
+  min-width: 100px;
+}
+
+/* адаптив для мобилок */
+@media (max-width: 640px) {
+  .modal-card {
+    width: 95%;
+    padding: 12px;
+  }
+
+  .modal-header h3 {
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+  }
+
+  .modal-form input[type="text"],
+  .modal-form input:not([type]) {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+
+  .color-row {
+    gap: 6px;
+  }
+
+  .modal-actions {
+    flex-direction: column; /* кнопки вниз */
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .modal-actions .btn {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+}
+
+
